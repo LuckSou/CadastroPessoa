@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastroPessoa.Presentation", "CadastroPessoa.Presentation\CadastroPessoa.Presentation.csproj", "{9722125A-F4FD-4BA4-8C68-05EB673E2D2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastroPessoa.API", "CadastroPessoa.Presentation\CadastroPessoa.API.csproj", "{9722125A-F4FD-4BA4-8C68-05EB673E2D2F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastroPessoa.Service", "CadastroPessoa.Service\CadastroPessoa.Service.csproj", "{3A85F721-7A0B-4E5C-B496-4DA8D19C60C6}"
 EndProject
