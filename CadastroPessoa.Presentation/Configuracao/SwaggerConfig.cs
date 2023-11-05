@@ -1,5 +1,4 @@
 ﻿using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace CadastroPessoa.API.Configuracao
@@ -12,18 +11,24 @@ namespace CadastroPessoa.API.Configuracao
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Minha API",
-                    Version = "v1"
+                    Title = "Cadastro de Pessoas API",
+                    Version = "v1",
+                    Description = "Uma API para cadastro e gerenciamento de informações de pessoas.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Lucas de Souza Ferreira",
+                        Email = "lucassf54@gmail.com"
+                    }
                 });
 
-                // Configuração do campo de autorização
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Description = "Cabeçalho de autorização JWT usando o esquema Bearer. \r\n\r\n Digite 'Bearer' [Token] e, em seguida, seu token adquirido através do método Token() na entrada de texto abaixo.\r\n\r\nExemplo: \"Bearer 12345abc2121grgf123bg56nhfy1b2dfbgdef\"",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -50,8 +55,7 @@ namespace CadastroPessoa.API.Configuracao
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API V1");
-                // Configuração para adicionar o campo de autorização no Swagger UI
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cadastro de Pessoas API V1");
                 c.DocExpansion(DocExpansion.List);
             });
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Graph.ExternalConnectors;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -9,29 +10,32 @@ namespace CadastroPessoa.API.Configuracao
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(JsonValidationFilter));
+            });
 
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.Limits.MaxRequestBodySize = int.MaxValue;
             });
 
-            services.AddAuthentication
-               (JwtBearerDefaults.AuthenticationScheme)
-               .AddJwtBearer(options =>
-               {
-                   options.TokenValidationParameters = new TokenValidationParameters
-                   {
-                       ValidateIssuer = true,
-                       ValidateAudience = true,
-                       ValidateLifetime = true,
-                       ValidateIssuerSigningKey = true,
-                       ValidIssuer = configuration["AuthSettings:Issuer"],
-                       ValidAudience = configuration["AuthSettings:Audience"],
-                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AuthSettings:Key"]))
-                   };
-               });
+            var key = Encoding.ASCII.GetBytes(configuration["JwtSettings:SecretKey"]);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = configuration["JwtSettings:Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = configuration["JwtSettings:Audience"],
+                        ValidateLifetime = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuerSigningKey = true,
+                    };
+                });
 
             services.AddCors(options =>
             {
@@ -57,6 +61,5 @@ namespace CadastroPessoa.API.Configuracao
             web.MapControllers();
             return app;
         }
-
     }
 }
