@@ -21,9 +21,11 @@ Este é um projeto de uma API de cadastro e gerenciamento de informações de pe
 
 - .NET Core 7 SDK instalado
 
-## Configuração
+##Documentação da API
+A documentação da API está disponível no Swagger. Após iniciar o projeto
 
-1. Clone o repositório:
+##Autorização
+A API usa autorização via JWT (JSON Web Tokens). Você deve obter um token de acesso para acessar os endpoints protegidos. Use o endpoint /token para obter um token válido.
 
-   ```bash
-   git clone https://github.com/seu-usuario/cadastro-pessoas-api.git
+##Testes Unitários
+Este projeto inclui testes unitários para garantir a qualidade do código. 
