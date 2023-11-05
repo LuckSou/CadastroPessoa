@@ -1,4 +1,5 @@
-﻿using CadastroPessoa.Model.Model;
+﻿using CadastroPessoa.Model.Enum;
+using CadastroPessoa.Model.Model;
 
 namespace CadastroPessoa.Service.Util
 {
@@ -18,7 +19,7 @@ namespace CadastroPessoa.Service.Util
                 errors.Add("O CPF informado é inválido.");
             }
 
-            if (!ValidarUF(pessoa.UF))
+            if (!Enum.IsDefined(typeof(Uf), pessoa.UF))
             {
                 errors.Add("A UF informada é inválida.");
             }
@@ -70,14 +71,6 @@ namespace CadastroPessoa.Service.Util
             }
 
             return true;
-        }
-
-
-        private bool ValidarUF(string uf)
-        {
-            string[] ufsValidas = { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" };
-
-            return !string.IsNullOrWhiteSpace(uf) && ufsValidas.Contains(uf.ToUpper());
         }
 
     }

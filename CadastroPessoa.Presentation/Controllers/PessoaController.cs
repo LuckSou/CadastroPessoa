@@ -75,8 +75,14 @@ namespace CadastroPessoa.API.Controllers
         [HttpPost("gravar-pessoa")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PessoaResultado))]
+        //[ServiceFilter(typeof(JsonValidationFilter))]
         public async Task<IActionResult> GravarPessoa([FromBody] Pessoa pessoa)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 var pessoaGravada = await _pessoa.GravarPessoaAsync(pessoa);
