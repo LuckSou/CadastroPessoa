@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CadastroPessoa.Model\CadastroPessoa.Model.csproj" />
+    <ProjectReference Include="..\CadastroPessoa.Service\CadastroPessoa.Service.csproj" />
+  </ItemGroup>
+
 </Project>

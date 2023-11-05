@@ -1,7 +1,7 @@
-﻿using CadastroPessoa.Model.Interface.Service;
+﻿using CadastroPessoa.Data;
+using CadastroPessoa.Model.Interface.Data;
+using CadastroPessoa.Model.Interface.Service;
 using CadastroPessoa.Service.Controll;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Graph.ExternalConnectors;
 
 namespace CadastroPessoa.API.Configuracao
 {
@@ -10,6 +10,8 @@ namespace CadastroPessoa.API.Configuracao
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<IAutenticacao, AutenticacaoControll>();
+            services.AddScoped<IPessoa, PessoaControll>();
+            services.AddSingleton<IPessoaRepository, PessoaRepository>();
         }
     }
 }

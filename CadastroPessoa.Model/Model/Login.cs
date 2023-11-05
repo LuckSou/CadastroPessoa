@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace CadastroPessoa.Model.Model
 {
-    public class TokenResponse
+    public class Login
     {
-        public string Token { get; set; }
-        public string TokenType { get; set; }
-        public long ExpiresIn { get; set; }
+        public string Usuario { get; set; }
+        public string Senha { get; set; }
     }
 }

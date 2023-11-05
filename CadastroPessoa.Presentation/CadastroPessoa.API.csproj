@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CadastroPessoa.Data\CadastroPessoa.Data.csproj" />
     <ProjectReference Include="..\CadastroPessoa.Model\CadastroPessoa.Model.csproj" />
     <ProjectReference Include="..\CadastroPessoa.Service\CadastroPessoa.Service.csproj" />
   </ItemGroup>

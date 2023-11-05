@@ -1,51 +1,36 @@
 ﻿using CadastroPessoa.Model.Interface.Service;
+using CadastroPessoa.Model.Model;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System;
-using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using CadastroPessoa.Model.Model;
+using System.Text;
 
-namespace CadastroPessoa.Service.Controll
+public class AutenticacaoControll : IAutenticacao
 {
-    public class AutenticacaoControll : IAutenticacao
+    private readonly IConfiguration _configuration;
+
+    public AutenticacaoControll(IConfiguration configuration)
     {
-
-        public bool ValidarCredenciais(string username, string password)
-        {
-            return username == "usuario" && password == "senha";
-        }
-
-        public TokenResponse GerarToken(string username)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("sua_chave_secreta");
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, username)
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            var expiresIn = (long)((TimeSpan)(tokenDescriptor.Expires - DateTime.UtcNow)).TotalMilliseconds;
-
-            var tokenResponse = new TokenResponse
-            {
-                Token = tokenString,
-                TokenType = "Bearer",
-                ExpiresIn = expiresIn
-            };
-
-            return tokenResponse;
-        }
-
+        _configuration = configuration;
     }
+
+    public bool ValidarCredenciais(string username, string password)
+    {
+        return username == "usuarioteste" && password == "senhasecreta";
+    }
+
+    public async Task<string> GerarTokenAsync(string username)
+    {
+        var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JwtSettings:SecretKey"]));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var issuer = _configuration["JwtSettings:Issuer"];
+        var audience = _configuration["JwtSettings:Audience"];
+        var expiration = DateTime.UtcNow.AddHours(Convert.ToDouble(_configuration["JwtSettings:TokenDurationHours"]));
+
+        var token = new JwtSecurityToken(issuer, audience, expires: expiration, signingCredentials: credentials);
+
+        return await Task.Run(() => new JwtSecurityTokenHandler().WriteToken(token));
+    }
+
 }
