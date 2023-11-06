@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace CadastroPessoa.Model.Interface.Service
+﻿namespace CadastroPessoa.Model.Interface.Service
 {
     public interface IAutenticacao
     {

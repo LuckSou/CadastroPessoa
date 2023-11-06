@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Graph.ExternalConnectors;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 

@@ -42,7 +42,7 @@ namespace CadastroPessoa.API.Controllers
             var pessoa = await _pessoa.ConsultarPessoaPorCodigoAsync(codigo);
             if (pessoa == null)
             {
-                return NotFound();
+                return NotFound("Não foi possivel encontrar um cadastro com esse código!");
             }
             var pessoaResultado = new PessoaResultado
             {
@@ -61,6 +61,11 @@ namespace CadastroPessoa.API.Controllers
         public async Task<IActionResult> ConsultarPessoasPorUF(string uf)
         {
             var pessoas = await _pessoa.ConsultarPessoasPorUFAsync(uf);
+
+            if (pessoas.Count() == 0)
+            {
+                return NotFound("Não foi possivel encontrar cadastro na UF desejada!");
+            }
             var pessoasResultado = pessoas.Select(p => new PessoaResultado
             {
                 Codigo = p.Codigo,
@@ -75,7 +80,6 @@ namespace CadastroPessoa.API.Controllers
         [HttpPost("gravar-pessoa")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PessoaResultado))]
-        //[ServiceFilter(typeof(JsonValidationFilter))]
         public async Task<IActionResult> GravarPessoa([FromBody] Pessoa pessoa)
         {
             if (!ModelState.IsValid)
@@ -118,7 +122,7 @@ namespace CadastroPessoa.API.Controllers
 
                 if (pessoaAtualizada == null)
                 {
-                    return NotFound();
+                    return NotFound("Não foi possivél encontrar a pessoa para ser atualizada!.");
                 }
 
                 var pessoaResultado = new PessoaResultado
@@ -145,7 +149,7 @@ namespace CadastroPessoa.API.Controllers
 
             if (!excluida)
             {
-                return NotFound();
+                return NotFound("Não foi possivel encontrar um cadastro com esse código!");
             }
 
             return NoContent();

@@ -1,9 +1,7 @@
 ﻿using CadastroPessoa.Model.Interface.Service;
-using CadastroPessoa.Model.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 public class AutenticacaoControll : IAutenticacao
@@ -22,7 +20,13 @@ public class AutenticacaoControll : IAutenticacao
 
     public async Task<string> GerarTokenAsync(string username)
     {
-        var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JwtSettings:SecretKey"]));
+        var secretKey = _configuration["JwtSettings:SecretKey"];
+        if (string.IsNullOrEmpty(secretKey))
+        {
+            throw new InvalidOperationException("A chave secreta JWT não foi configurada.");
+        }
+
+        var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var issuer = _configuration["JwtSettings:Issuer"];
         var audience = _configuration["JwtSettings:Audience"];
@@ -32,5 +36,6 @@ public class AutenticacaoControll : IAutenticacao
 
         return await Task.Run(() => new JwtSecurityTokenHandler().WriteToken(token));
     }
+
 
 }

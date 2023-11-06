@@ -26,11 +26,12 @@ namespace CadastroPessoa.Service.Controll
 
         public async Task<IEnumerable<Pessoa>> ConsultarPessoasPorUFAsync(string uf)
         {
-            return await _pessoaRepository.ConsultarPessoasPorUFAsync(uf);
+            return await _pessoaRepository.ConsultarPessoasPorUFAsync(uf.ToUpper());
         }
 
         public async Task<Pessoa> GravarPessoaAsync(Pessoa pessoa)
         {
+            pessoa.UF = pessoa.UF?.ToUpper();
             var pessoaValidacao = new PessoaValidacao();
             var errosValidacao = pessoaValidacao.ValidarPessoa(pessoa);
 
@@ -48,6 +49,8 @@ namespace CadastroPessoa.Service.Controll
 
         public async Task<Pessoa> AtualizarPessoaAsync(int codigo, Pessoa pessoa)
         {
+            pessoa.UF = pessoa.UF?.ToUpper();
+
             var pessoaValidacao = new PessoaValidacao();
             var errosValidacao = pessoaValidacao.ValidarPessoa(pessoa);
 
